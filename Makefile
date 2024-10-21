@@ -11,12 +11,12 @@ INCLUDE_FLAGS = -I$(INDEPTH)include # ? OPEN_GL
 # LINKER_FLAGS = -LC:\VulkanSDK\1.3.290.0/Lib -Llib -static -lglfw3dll -lvulkan-1 # ? VULKAN
 LINKER_FLAGS = -L$(INDEPTH)lib -static -lglfw3dll -lopengl32 # ? OPEN_GL
 ASSEMBLY = wilt_engine
-SRC = $(INDEPTH)include/glad/glad.c $(INDEPTH)src/main.cpp
+SRC = $(INDEPTH)include/glad/glad.c $(INDEPTH)src/*.cpp
 ARGS = 
 
 compile:
 	mkdir ./bin
-	$(CC) $(SRC) $(COMPILER_FLAGS) -o bin/$(ASSEMBLY).exe $(DEFINES) $(INCLUDE_FLAGS) $(LINKER_FLAGS)
+	$(CC) $(SRC) $(COMPILER_FLAGS) -o bin/$(ASSEMBLY).exe $(INCLUDE_FLAGS) $(LINKER_FLAGS)
 
 game:
 	mkdir ./build/
