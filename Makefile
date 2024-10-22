@@ -1,7 +1,7 @@
 all: clean compile game run
-# all: clear compile run
+#all: clear compile run
 
-CC = clang++
+CC = clang++ --std=c++23
 INDEPTH = engine/
 # COMPILER_FLAGS = -Wall -Werror
 # COMPILER_FLAGS = -Wall
@@ -18,6 +18,7 @@ compile:
 	mkdir ./bin
 	$(CC) $(SRC) $(COMPILER_FLAGS) -o bin/$(ASSEMBLY).exe $(INCLUDE_FLAGS) $(LINKER_FLAGS)
 
+
 game:
 	mkdir ./build/
 	cp $(INDEPTH)/lib/glfw3.dll build
@@ -27,6 +28,16 @@ game:
 run:
 	@echo "build/$(ASSEMBLY).exe running..."
 	@./build/$(ASSEMBLY).exe $(ARGS)
+
+debug:
+	-rm -rf build
+	-rm -rf bin
+	mkdir ./bin
+	$(CC) --debug $(SRC) $(COMPILER_FLAGS) -o bin/$(ASSEMBLY).exe $(INCLUDE_FLAGS) $(LINKER_FLAGS)
+	mkdir ./build/
+	cp $(INDEPTH)/lib/glfw3.dll build
+	cp bin/$(ASSEMBLY).exe build
+	cp -r ./shader/ ./build/
 
 clean:
 	-rm -rf build
