@@ -1,4 +1,3 @@
-#include <cstdlib>
 #include <glad/glad.h>
 
 #include "shader.hpp"
@@ -85,7 +84,7 @@ int main(int argc, char **argv) {
     // glEnableVertexAttribArray(2);
 
     Shader ourShader("shader/vertex.shader", "shader/fragment.shader");
-    //
+
     // unsigned int texture;
     // glGenTextures(1, &texture);
     // glBindTexture(GL_TEXTURE_2D, texture);
