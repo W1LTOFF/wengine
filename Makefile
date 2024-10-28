@@ -24,6 +24,7 @@ game:
 	cp $(INDEPTH)/lib/glfw3.dll build
 	cp bin/$(ASSEMBLY).exe build
 	cp -r ./shader/ ./build/
+	cp -r ./res/ ./build/
 
 run:
 	@echo "build/$(ASSEMBLY).exe running..."

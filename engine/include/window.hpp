@@ -16,6 +16,7 @@ class Window {
     void MakeContextCurrent();
     bool windowShouldClose();
     void swapBuffers();
+    void handleInput();
 };
 
 #endif

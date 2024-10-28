@@ -27,3 +27,9 @@ void Window::framebufferSizeCallback() {
 bool Window::windowShouldClose() { return glfwWindowShouldClose(this->window); }
 
 void Window::swapBuffers() { glfwSwapBuffers(this->window); }
+
+void Window::handleInput() {
+    if (glfwGetKey(this->window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        glfwSetWindowShouldClose(this->window, true);
+    }
+}
