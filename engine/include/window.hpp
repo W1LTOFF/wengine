@@ -12,6 +12,9 @@ class Window {
     void framebufferSizeCallback();
 
   public:
+    // delete window getter later, dont need it in release
+    // TODO: wrap all window related stuff
+    GLFWwindow *getWindow();
     Window(int width, int height, const char *title);
     void MakeContextCurrent();
     bool windowShouldClose();

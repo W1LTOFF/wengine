@@ -1,9 +1,7 @@
 #include "window.hpp"
+#include "GLFW/glfw3.h"
+#include <gl/gl.h>
 #include <print>
-
-void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
-    glViewport(0, 0, width, height);
-}
 
 Window::Window(int width, int height, const char *title) {
     this->width = width;
@@ -16,12 +14,16 @@ Window::Window(int width, int height, const char *title) {
         std::print("Failed to initialize window\n");
         glfwTerminate();
     }
+    this->framebufferSizeCallback();
 }
 
 void Window::MakeContextCurrent() { glfwMakeContextCurrent(this->window); }
 
 void Window::framebufferSizeCallback() {
-    glfwSetFramebufferSizeCallback(this->window, framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(
+        this->window, [](GLFWwindow *window, int width, int height) {
+            glViewport(0, 0, width, height);
+        });
 }
 
 bool Window::windowShouldClose() { return glfwWindowShouldClose(this->window); }
@@ -33,3 +35,6 @@ void Window::handleInput() {
         glfwSetWindowShouldClose(this->window, true);
     }
 }
+
+// DELETE
+GLFWwindow *Window::getWindow() { return this->window; }
