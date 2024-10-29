@@ -3,6 +3,8 @@
 
 #include <glm/glm.hpp>
 
+enum CameraMovement { FORWARD, BACKWARD, LEFT, RIGHT, UP, DOWN };
+
 const float YAW = -90.f;
 const float PITCH = 0.f;
 const float SPEED = 2.5f;
@@ -29,11 +31,14 @@ class Camera {
     float mouseSensitivity;
     float fov;
 
-    Camera(glm::vec3 position = glm::vec3(0.f, 0.f, 0.f),
-           glm::vec3 up = glm::vec3(0.f, 1.f, 0.f), float yaw = YAW,
+    Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
+           glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW,
            float pitch = PITCH);
 
     glm::mat4 getViewMatrix();
+    void processKeyboard(CameraMovement direction, float deltaTime);
+    void processMouseMovement(float dx, float dy, bool constrainPitch = true);
+    void processMouseScroll(float dy);
 };
 
 #endif
