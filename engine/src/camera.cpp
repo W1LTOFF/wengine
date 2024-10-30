@@ -1,6 +1,4 @@
 #include "camera.hpp"
-#include "glm/ext/matrix_transform.hpp"
-#include "glm/ext/quaternion_geometric.hpp"
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
     : front(glm::vec3(0.0f, 0.0f, -1.0f)), movementSpeed(SPEED),
@@ -18,39 +16,62 @@ glm::mat4 Camera::getViewMatrix() {
 
 void Camera::processKeyboard(CameraMovement direction, float deltaTime) {
     float velocity = this->movementSpeed * deltaTime;
+    glm::vec3 velocityVec = {0.f, 0.f, 0.f};
     if (direction == FORWARD) {
-        this->position += this->front * velocity;
+        velocityVec += this->front * velocity;
     }
     if (direction == BACKWARD) {
-        this->position -= this->front * velocity;
+        velocityVec -= this->front * velocity;
     }
     if (direction == RIGHT) {
-        this->position += this->right * velocity;
+        velocityVec += this->right * velocity;
     }
     if (direction == LEFT) {
-        this->position -= this->right * velocity;
+        velocityVec -= this->right * velocity;
     }
     if (direction == UP) {
-        this->position += this->worldUp * velocity;
+        velocityVec += this->worldUp * velocity;
     }
     if (direction == DOWN) {
-        this->position -= this->worldUp * velocity;
+        velocityVec -= this->worldUp * velocity;
     }
+
+    this->position += velocityVec;
+
+    // if (direction == FORWARD) {
+    //     this->position += this->front * velocity;
+    // }
+    // if (direction == BACKWARD) {
+    //     this->position -= this->front * velocity;
+    // }
+    // if (direction == RIGHT) {
+    //     this->position += this->right * velocity;
+    // }
+    // if (direction == LEFT) {
+    //     this->position -= this->right * velocity;
+    // }
+    // if (direction == UP) {
+    //     this->position += this->worldUp * velocity;
+    // }
+    // if (direction == DOWN) {
+    //     this->position -= this->worldUp * velocity;
+    // }
 }
 
 void Camera::processMouseMovement(float dx, float dy, bool constrainPitch) {
-    dx *= this->mouseSensitivity;
-    dy *= this->mouseSensitivity;
+    if (mouseActive) {
+        dx *= this->mouseSensitivity;
+        dy *= this->mouseSensitivity;
 
-    this->yaw += dx;
-    this->pitch += dy;
-
-    if (constrainPitch) {
-        if (pitch > 89.0f) {
-            pitch = 89.0f;
-        }
-        if (pitch < -89.0f) {
-            pitch = -89.0f;
+        this->yaw += dx;
+        this->pitch += dy;
+        if (constrainPitch) {
+            if (pitch > 89.0f) {
+                pitch = 89.0f;
+            }
+            if (pitch < -89.0f) {
+                pitch = -89.0f;
+            }
         }
     }
     updateCameraVectors();
@@ -71,8 +92,8 @@ void Camera::updateCameraVectors() {
     front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
     front.y = sin(glm::radians(pitch));
     front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    this->front = glm::normalize(front);
 
+    this->front = glm::normalize(front);
     this->right = glm::normalize(glm::cross(this->front, this->worldUp));
     this->up = glm::normalize(glm::cross(this->right, this->front));
 }

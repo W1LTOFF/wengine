@@ -7,11 +7,11 @@ INDEPTH = engine/
 # COMPILER_FLAGS = -Wall
 COMPILER_FLAGS = -Wall -w
 # INCLUDE_FLAGS = -IC:\VulkanSDK\1.3.290.0/Include -Iinclude # ? VULKAN
-INCLUDE_FLAGS = -I$(INDEPTH)include # ? OPEN_GL
+INCLUDE_FLAGS = -I$(INDEPTH)include -I$(INDEPTH)include/imgui # ? OPEN_GL
 # LINKER_FLAGS = -LC:\VulkanSDK\1.3.290.0/Lib -Llib -static -lglfw3dll -lvulkan-1 # ? VULKAN
 LINKER_FLAGS = -L$(INDEPTH)lib -static -lglfw3dll -lopengl32 # ? OPEN_GL
 ASSEMBLY = wilt_engine
-SRC = $(INDEPTH)include/glad/glad.c $(INDEPTH)src/*.cpp
+SRC = $(INDEPTH)include/glad/glad.c $(INDEPTH)include/imgui/*.cpp $(INDEPTH)src/*.cpp
 ARGS = 
 
 compile:

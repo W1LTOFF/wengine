@@ -1,6 +1,7 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 
+#include "glm/ext/matrix_transform.hpp"
 #include <glm/glm.hpp>
 
 enum CameraMovement { FORWARD, BACKWARD, LEFT, RIGHT, UP, DOWN };
@@ -16,8 +17,10 @@ class Camera {
     void updateCameraVectors();
 
   public:
+    bool mouseActive = true;
     glm::vec3 position;
     glm::vec3 front;
+
     glm::vec3 up;
     glm::vec3 right;
     glm::vec3 worldUp;

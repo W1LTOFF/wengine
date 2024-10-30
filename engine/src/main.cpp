@@ -3,6 +3,10 @@
 #include <functional>
 #include <thread>
 
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
 #include "glm/detail/qualifier.hpp"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_float4x4.hpp"
@@ -29,8 +33,8 @@
 #include "stb_image.h"
 
 // settings
-const unsigned int SCREEN_WIDTH = 800;
-const unsigned int SCREEN_HEIGHT = 600;
+const unsigned int SCREEN_WIDTH = 1280;
+const unsigned int SCREEN_HEIGHT = 720;
 
 // // camera
 // glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
@@ -50,8 +54,17 @@ float deltaTime = 0.0f; // time between current frame and last frame
 float lastFrame = 0.0f;
 
 void processInput(GLFWwindow *window) {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS) {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        camera.mouseActive = false;
+    } else {
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        camera.mouseActive = true;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
+    }
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         camera.processKeyboard(FORWARD, deltaTime);
@@ -266,6 +279,10 @@ int main(int argc, char **argv) {
     glfwSetCursorPosCallback(window.getWindow(), mouse_callback);
     glfwSetScrollCallback(window.getWindow(), scrollCallback);
 
+    ImGui::CreateContext();
+    ImGui_ImplGlfw_InitForOpenGL(window.getWindow(), true);
+    ImGui_ImplOpenGL3_Init();
+
     while (!window.windowShouldClose()) {
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
@@ -330,6 +347,14 @@ int main(int argc, char **argv) {
         glDrawArrays(GL_TRIANGLES, 0, 6 * 6);
 
         // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        ImGui::SliderFloat("float", &camera.fov, 10.0f, 360.0f);
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         window.swapBuffers();
 
