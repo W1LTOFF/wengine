@@ -15,47 +15,30 @@ glm::mat4 Camera::getViewMatrix() {
 }
 
 void Camera::processKeyboard(CameraMovement direction, float deltaTime) {
-    float velocity = this->movementSpeed * deltaTime;
-    glm::vec3 velocityVec = {0.f, 0.f, 0.f};
-    if (direction == FORWARD) {
-        velocityVec += this->front * velocity;
-    }
-    if (direction == BACKWARD) {
-        velocityVec -= this->front * velocity;
-    }
-    if (direction == RIGHT) {
-        velocityVec += this->right * velocity;
-    }
-    if (direction == LEFT) {
-        velocityVec -= this->right * velocity;
-    }
-    if (direction == UP) {
-        velocityVec += this->worldUp * velocity;
-    }
-    if (direction == DOWN) {
-        velocityVec -= this->worldUp * velocity;
-    }
+    if (mouseActive) {
+        float velocity = this->movementSpeed * deltaTime;
+        glm::vec3 velocityVec = {0.f, 0.f, 0.f};
+        if (direction == FORWARD) {
+            velocityVec += this->front * velocity;
+        }
+        if (direction == BACKWARD) {
+            velocityVec -= this->front * velocity;
+        }
+        if (direction == RIGHT) {
+            velocityVec += this->right * velocity;
+        }
+        if (direction == LEFT) {
+            velocityVec -= this->right * velocity;
+        }
+        if (direction == UP) {
+            velocityVec += this->worldUp * velocity;
+        }
+        if (direction == DOWN) {
+            velocityVec -= this->worldUp * velocity;
+        }
 
-    this->position += velocityVec;
-
-    // if (direction == FORWARD) {
-    //     this->position += this->front * velocity;
-    // }
-    // if (direction == BACKWARD) {
-    //     this->position -= this->front * velocity;
-    // }
-    // if (direction == RIGHT) {
-    //     this->position += this->right * velocity;
-    // }
-    // if (direction == LEFT) {
-    //     this->position -= this->right * velocity;
-    // }
-    // if (direction == UP) {
-    //     this->position += this->worldUp * velocity;
-    // }
-    // if (direction == DOWN) {
-    //     this->position -= this->worldUp * velocity;
-    // }
+        this->position += velocityVec;
+    }
 }
 
 void Camera::processMouseMovement(float dx, float dy, bool constrainPitch) {
@@ -66,12 +49,18 @@ void Camera::processMouseMovement(float dx, float dy, bool constrainPitch) {
         this->yaw += dx;
         this->pitch += dy;
         if (constrainPitch) {
-            if (pitch > 89.0f) {
-                pitch = 89.0f;
+            if (pitch > 89.f) {
+                pitch = 89.f;
             }
-            if (pitch < -89.0f) {
-                pitch = -89.0f;
+            if (pitch < -89.f) {
+                pitch = -89.f;
             }
+        }
+        if (yaw > 360.f) {
+            yaw = 0.f;
+        }
+        if (yaw < -360.f) {
+            yaw = 0.f;
         }
     }
     updateCameraVectors();

@@ -17,6 +17,7 @@ class Camera {
     void updateCameraVectors();
 
   public:
+    bool firstMouse = true;
     bool mouseActive = true;
     glm::vec3 position;
     glm::vec3 front;
