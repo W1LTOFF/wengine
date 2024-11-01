@@ -7,16 +7,18 @@
 class Window {
   private:
     GLFWwindow *window;
-    int width;
-    int height;
-    void framebufferSizeCallback();
 
   public:
-    // delete window getter later, dont need it in release
+    int width;
+    int height;
+
+    // delete window getter later, dont need
+    // it in release
     // TODO: wrap all window related stuff
     GLFWwindow *getWindow();
     Window(int width, int height, const char *title);
-    void MakeContextCurrent();
+    void update();
+    void makeContextCurrent();
     bool windowShouldClose();
     void swapBuffers();
     void handleInput();

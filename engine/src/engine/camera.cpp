@@ -1,4 +1,4 @@
-#include "camera.hpp"
+#include "wengine/camera.hpp"
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
     : front(glm::vec3(0.0f, 0.0f, -1.0f)), movementSpeed(SPEED),

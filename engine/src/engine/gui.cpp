@@ -1,4 +1,4 @@
-#include "gui.hpp"
+#include "wengine/gui.hpp"
 #include "GLFW/glfw3.h"
 #include "glm/ext/vector_float2.hpp"
 #include "imgui.h"
@@ -9,7 +9,7 @@ Gui::Gui(GLFWwindow *window) {
     ImGui_ImplOpenGL3_Init();
 }
 
-void Gui::debug(GLFWwindow *window, Camera *camera) {
+void Gui::debug(Window *window, Camera *camera) {
     ImGui::Begin("camera");
     ImGui::Text("x %.3f", camera->position.x);
     ImGui::InputFloat3("position", &camera->position.x);
@@ -46,12 +46,13 @@ void Gui::debug(GLFWwindow *window, Camera *camera) {
 
     ImGui::Begin("window");
     double xPos, yPos;
-    glfwGetCursorPos(window, &xPos, &yPos);
+    glfwGetCursorPos(window->getWindow(), &xPos, &yPos);
     ImGui::Text("mousePosition x:%.3f y:%.3f", xPos, yPos);
+    ImGui::Text("width %i height %i", window->width, window->height);
     ImGui::End();
 }
 
-void Gui::render(GLFWwindow *window, Camera *camera) {
+void Gui::render(Window *window, Camera *camera) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();

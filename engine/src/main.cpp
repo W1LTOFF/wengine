@@ -15,13 +15,14 @@
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_float4x4.hpp"
 #include "glm/ext/matrix_transform.hpp"
+#include "glm/ext/vector_float3.hpp"
 #include "glm/trigonometric.hpp"
 
-#include "shader.hpp"
+#include "wengine/shader.hpp"
 
-#include "camera.hpp"
-#include "gui.hpp"
-#include "window.hpp"
+#include "wengine/camera.hpp"
+#include "wengine/gui.hpp"
+#include "wengine/window.hpp"
 
 // #include <gl/gl.h>
 
@@ -144,8 +145,7 @@ int main(int argc, char **argv) {
     }
 
     Window window(SCREEN_WIDTH, SCREEN_HEIGHT, "wilt engine");
-    window.MakeContextCurrent();
-    window.MakeContextCurrent();
+    window.makeContextCurrent();
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cout << "Failed to initialize GLAD\n";
@@ -221,6 +221,8 @@ int main(int argc, char **argv) {
 
     ourShader.use();
     ourShader.setInt("ourTexture", 0);
+    glUniform4f(glGetUniformLocation(ourShader.id, "lightColor"), 1.f, 1.f, 1.f,
+                1.f);
 
     uiShader.use();
     uiShader.setInt("ourTexture", 0);
@@ -236,15 +238,15 @@ int main(int argc, char **argv) {
 
     Gui gui(window.getWindow());
 
-    std::print("vx({}) -> px({})\nvy({}) -> py({})\n", -0.7f,
-               xFromVertexToPixel(-0.7f), -0.8f, yFromVertexToPixel(-0.8f));
-
     while (!window.windowShouldClose()) {
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
+        // glEnable(GL_DEPTH_TEST);
+
         window.handleInput();
+        window.update();
         processInput(window.getWindow());
 
         glClearColor(0.f, 0.2f, 0.2f, 1.f);
@@ -265,7 +267,7 @@ int main(int argc, char **argv) {
 
         glm::mat4 projection = glm::perspective(
             glm::radians(camera.fov),
-            (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.f);
+            (float)window.width / (float)window.height, 0.1f, 100.f);
 
         glUniformMatrix4fv(glGetUniformLocation(ourShader.id, "model"), 1,
                            GL_FALSE, glm::value_ptr(model));
@@ -277,12 +279,20 @@ int main(int argc, char **argv) {
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6 * 6);
 
+        // glDisable(GL_DEPTH_TEST);
         uiShader.use();
+
+        // glm::mat4 proj = glm::ortho(0.0f, (float)window.width,
+        //                             (float)window.height, 0.0f, -1.0f, 1.0f);
+
+        // glUniformMatrix4fv(glGetUniformLocation(uiShader.id, "projection"),
+        // 1,
+        //                    GL_FALSE, glm::value_ptr(proj));
 
         glBindVertexArray(UI_VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        gui.render(window.getWindow(), &camera);
+        gui.render(&window, &camera);
 
         window.swapBuffers();
 
