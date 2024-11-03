@@ -50,6 +50,11 @@ void Gui::debug(Window *window, Camera *camera) {
     ImGui::Text("mousePosition x:%.3f y:%.3f", xPos, yPos);
     ImGui::Text("width %i height %i", window->width, window->height);
     ImGui::End();
+
+    ImGui::Begin("engine");
+    ImGui::Text("deltaTime %.5f");
+    ImGui::Text("frameRate %i");
+    ImGui::End();
 }
 
 void Gui::render(Window *window, Camera *camera) {

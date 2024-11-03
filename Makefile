@@ -3,7 +3,8 @@ all: clean debug compile build run
 
 CC = clang++ --std=c++23
 INDEPTH = engine/
-COMPILER_FLAGS = -Wall -w
+COMPILER_FLAGS = -pedantic
+# COMPILER_FLAGS = -Wall -w -Wpadded
 INCLUDE_FLAGS = -I$(INDEPTH)include -I$(INDEPTH)include/imgui
 LINKER_FLAGS = -L$(INDEPTH)lib -static -l$(INDEPTH)lib/wengine/wengine -l$(INDEPTH)lib/wengine/imgui -l$(INDEPTH)lib/wengine/glad -lglfw3dll -lopengl32
 EXECUTABLE = wilt_engine
@@ -28,7 +29,7 @@ compile_imgui:
 	rm *.o
 
 compile_lib:
-	$(CC) $(EDITION_FLAGS) -c $(LIB_SRC) -I$(INDEPTH)include/imgui -I$(INDEPTH)include
+	$(CC) $(EDITION_FLAGS) $(COMPILER_FLAGS) -c $(LIB_SRC) -I$(INDEPTH)include/imgui -I$(INDEPTH)include
 	ar r wengine.lib *.o
 	-rm engine/lib/wengine/wengine.lib
 	mv wengine.lib engine/lib/wengine

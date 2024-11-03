@@ -1,3 +1,4 @@
+#include <cmath>
 #include <glad/glad.h>
 
 #include <GLFW/glfw3.h>
@@ -18,6 +19,7 @@
 #include "glm/ext/vector_float3.hpp"
 #include "glm/trigonometric.hpp"
 
+#include "wengine/resourceManager.hpp"
 #include "wengine/shader.hpp"
 
 #include "wengine/camera.hpp"
@@ -33,8 +35,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+// #define STB_IMAGE_IMPLEMENTATION
+// #include "stb_image.h"
 
 // settings
 const unsigned int SCREEN_WIDTH = 1280;
@@ -108,8 +110,6 @@ void scrollCallback(GLFWwindow *window, double dx, double dy) {
 
 int main(int argc, char **argv) {
 
-    float lastX = SCREEN_WIDTH / 2.f, lastY = SCREEN_HEIGHT / 2.f;
-
     float vertices[] = {
         -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.5f,  -0.5f, -0.5f, 1.0f, 0.0f,
         0.5f,  0.5f,  -0.5f, 1.0f, 1.0f, 0.5f,  0.5f,  -0.5f, 1.0f, 1.0f,
@@ -152,8 +152,12 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    Shader ourShader("shader/vertex.shader", "shader/fragment.shader");
-    Shader uiShader("shader/uiVertex.shader", "shader/uiFragment.shader");
+    // Shader ourShader("shader/vertex.shader", "shader/fragment.shader");
+    // Shader uiShader("shader/uiVertex.shader", "shader/uiFragment.shader");
+    wilt::ResourceManager rm;
+    rm.newShader("ourShader", "shader/vertex.shader", "shader/fragment.shader");
+    rm.newShader("uiShader", "shader/uiVertex.shader",
+                 "shader/uiFragment.shader");
 
     float ui[] = {-0.7f, -0.8f, 0.f, 0.f, 1.f, 0.7f,  -1.f,  0.f, 1.f, 0.f,
                   -0.7f, -1.f,  0.f, 0.f, 0.f, -0.7f, -0.8f, 0.f, 0.f, 1.f,
@@ -193,39 +197,26 @@ int main(int argc, char **argv) {
                           (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    // set the texture wrapping/filtering options (on currently bound
-    // texture)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    // load and generate the texture
-    int width, height, nrChannels;
-    stbi_set_flip_vertically_on_load(true);
-    unsigned char *data =
-        stbi_load(std::filesystem::absolute("./res/texture/notexture.png")
-                      .string()
-                      .c_str(),
-                  &width, &height, &nrChannels, 0);
-    if (data) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
-                     GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    } else {
-        std::print("Failed to load texture");
-    }
-    stbi_image_free(data);
+    wilt::Texture texture("./res/texture/liza.png");
+    wilt::Texture uiTexture("./res/texture/texture.png");
 
-    ourShader.use();
-    ourShader.setInt("ourTexture", 0);
-    glUniform4f(glGetUniformLocation(ourShader.id, "lightColor"), 1.f, 1.f, 1.f,
-                1.f);
+    // ourShader.use();
+    // ourShader.setInt("ourTexture", 0);
+    // glUniform4f(glGetUniformLocation(ourShader.id,
+    // "lightColor"), 1.f, 1.f, 1.f,
+    //             1.f);
+    //
+    // uiShader.use();
+    // uiShader.setInt("ourTexture", 0);
 
-    uiShader.use();
-    uiShader.setInt("ourTexture", 0);
+    rm.getShader("ourShader")->use();
+    rm.getShader("ourShader")->setInt("ourTexture", 0);
+    glUniform4f(
+        glGetUniformLocation(rm.getShader("ourShader")->id, "lightColor"), 1.f,
+        1.f, 1.f, 1.f);
+
+    rm.getShader("uiShader")->use();
+    rm.getShader("uiShader")->setInt("ourTexture", 0);
 
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -238,10 +229,21 @@ int main(int argc, char **argv) {
 
     Gui gui(window.getWindow());
 
+    // int frames = 0;
+    // double lastTime = glfwGetTime();
+
     while (!window.windowShouldClose()) {
-        float currentFrame = glfwGetTime();
+        double currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
+        // if (currentFrame - lastTime >= 1.f) {
+        //     std::print("frames:      {}\n", frames);
+        //     std::print("1/deltaTime: {}\n", 1 / deltaTime);
+        //     frames = 0;
+        //     lastTime = currentFrame;
+        // }
+        // frames++;
 
         // glEnable(GL_DEPTH_TEST);
 
@@ -253,9 +255,9 @@ int main(int argc, char **argv) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glBindTexture(GL_TEXTURE_2D, texture.getId());
 
-        ourShader.use();
+        rm.getShader("ourshader")->use();
 
         glm::mat4 model = glm::mat4(1.f);
 
@@ -269,25 +271,32 @@ int main(int argc, char **argv) {
             glm::radians(camera.fov),
             (float)window.width / (float)window.height, 0.1f, 100.f);
 
-        glUniformMatrix4fv(glGetUniformLocation(ourShader.id, "model"), 1,
-                           GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(glGetUniformLocation(ourShader.id, "view"), 1,
-                           GL_FALSE, glm::value_ptr(view));
-        glUniformMatrix4fv(glGetUniformLocation(ourShader.id, "projection"), 1,
-                           GL_FALSE, glm::value_ptr(projection));
+        glUniformMatrix4fv(
+            glGetUniformLocation(rm.getShader("ourshader")->id, "model"), 1,
+            GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(
+            glGetUniformLocation(rm.getShader("ourshader")->id, "view"), 1,
+            GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(
+            glGetUniformLocation(rm.getShader("ourshader")->id, "projection"),
+            1, GL_FALSE, glm::value_ptr(projection));
 
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6 * 6);
 
         // glDisable(GL_DEPTH_TEST);
-        uiShader.use();
+        rm.getShader("uiShader")->use();
 
         // glm::mat4 proj = glm::ortho(0.0f, (float)window.width,
-        //                             (float)window.height, 0.0f, -1.0f, 1.0f);
+        //                             (float)window.height, 0.0f,
+        // -1.0f, 1.0f);
 
-        // glUniformMatrix4fv(glGetUniformLocation(uiShader.id, "projection"),
+        // glUniformMatrix4fv(glGetUniformLocation(uiShader.id,
+        // "projection"),
         // 1,
-        //                    GL_FALSE, glm::value_ptr(proj));
+        //                   GL_FALSE, glm::value_ptr(proj));
+
+        glBindTexture(GL_TEXTURE_2D, uiTexture.getId());
 
         glBindVertexArray(UI_VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -297,6 +306,7 @@ int main(int argc, char **argv) {
         window.swapBuffers();
 
         glfwPollEvents();
+        // std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
