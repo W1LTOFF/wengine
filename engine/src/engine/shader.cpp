@@ -5,7 +5,7 @@
 #include <sstream>
 #include <string>
 
-Shader::Shader(const char *vertexPath, const char *fragmentPath) {
+void Shader::compile(const char *vertexPath, const char *fragmentPath) {
     unsigned int vertex, fragment;
     std::string vertexCode;
     std::string fragmentCode;

@@ -111,29 +111,42 @@ void scrollCallback(GLFWwindow *window, double dx, double dy) {
 int main(int argc, char **argv) {
 
     float vertices[] = {
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.5f,  -0.5f, -0.5f, 1.0f, 0.0f,
-        0.5f,  0.5f,  -0.5f, 1.0f, 1.0f, 0.5f,  0.5f,  -0.5f, 1.0f, 1.0f,
-        -0.5f, 0.5f,  -0.5f, 0.0f, 1.0f, -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-
-        -0.5f, -0.5f, 0.5f,  0.0f, 0.0f, 0.5f,  -0.5f, 0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f, 0.5f,  0.5f,  0.0f, 1.0f, -0.5f, -0.5f, 0.5f,  0.0f, 0.0f,
-
-        -0.5f, 0.5f,  0.5f,  1.0f, 0.0f, -0.5f, 0.5f,  -0.5f, 1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, 0.5f,  0.0f, 0.0f, -0.5f, 0.5f,  0.5f,  1.0f, 0.0f,
-
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.5f,  0.5f,  -0.5f, 1.0f, 1.0f,
-        0.5f,  -0.5f, -0.5f, 0.0f, 1.0f, 0.5f,  -0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f,  -0.5f, 0.5f,  0.0f, 0.0f, 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.5f,  -0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f,  -0.5f, 0.5f,  1.0f, 0.0f, 0.5f,  -0.5f, 0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f, 0.5f,  0.0f, 0.0f, -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-
-        -0.5f, 0.5f,  -0.5f, 0.0f, 1.0f, 0.5f,  0.5f,  -0.5f, 1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f, 0.5f,  0.5f,  0.0f, 0.0f, -0.5f, 0.5f,  -0.5f, 0.0f, 1.0f};
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
+        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f};
     unsigned int indices[] = {
         // note that we start from 0!
         0, 1, 3, // first triangle
@@ -154,14 +167,12 @@ int main(int argc, char **argv) {
 
     // Shader ourShader("shader/vertex.shader", "shader/fragment.shader");
     // Shader uiShader("shader/uiVertex.shader", "shader/uiFragment.shader");
-    wilt::ResourceManager rm;
-    rm.newShader("ourShader", "shader/vertex.shader", "shader/fragment.shader");
-    rm.newShader("uiShader", "shader/uiVertex.shader",
-                 "shader/uiFragment.shader");
+    ResourceManager::loadShader("ourShader", "shader/vertex.shader", "shader/fragment.shader");
+    ResourceManager::loadShader("uiShader", "shader/uiVertex.shader", "shader/uiFragment.shader");
 
-    float ui[] = {-0.7f, -0.8f, 0.f, 0.f, 1.f, 0.7f,  -1.f,  0.f, 1.f, 0.f,
-                  -0.7f, -1.f,  0.f, 0.f, 0.f, -0.7f, -0.8f, 0.f, 0.f, 1.f,
-                  0.7f,  -0.8f, 0.f, 1.f, 1.f, 0.7f,  -1.f,  0.f, 1.f, 0.f};
+    float ui[] = {-0.7f, -0.8f, 0.f, 0.f, 1.f, 0.7f, -1.f, 0.f, 1.f, 0.f,
+                  -0.7f, -1.f, 0.f, 0.f, 0.f, -0.7f, -0.8f, 0.f, 0.f, 1.f,
+                  0.7f, -0.8f, 0.f, 1.f, 1.f, 0.7f, -1.f, 0.f, 1.f, 0.f};
     unsigned int UI_VBO;
     glGenBuffers(1, &UI_VBO);
     glBindBuffer(GL_ARRAY_BUFFER, UI_VBO);
@@ -197,8 +208,10 @@ int main(int argc, char **argv) {
                           (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    wilt::Texture texture("./res/texture/liza.png");
-    wilt::Texture uiTexture("./res/texture/texture.png");
+    // wilt::Texture texture("./res/texture/notexture.png");
+    // wilt::Texture uiTexture("./res/texture/texture.png");
+    ResourceManager::loadTexture("texture", "./res/texture/notexture.png");
+    ResourceManager::loadTexture("uiTexture", "./res/texture/texture.png");
 
     // ourShader.use();
     // ourShader.setInt("ourTexture", 0);
@@ -209,14 +222,22 @@ int main(int argc, char **argv) {
     // uiShader.use();
     // uiShader.setInt("ourTexture", 0);
 
-    rm.getShader("ourShader")->use();
-    rm.getShader("ourShader")->setInt("ourTexture", 0);
-    glUniform4f(
-        glGetUniformLocation(rm.getShader("ourShader")->id, "lightColor"), 1.f,
-        1.f, 1.f, 1.f);
+    // rm.getShader("ourShader")->use();
+    // rm.getShader("ourShader")->setInt("ourTexture", 0);
+    // glUniform4f(
+    //     glGetUniformLocation(rm.getShader("ourShader")->id, "lightColor"), 1.f,
+    //     1.f, 1.f, 1.f);
+    //
+    // rm.getShader("uiShader")->use();
+    // rm.getShader("uiShader")->setInt("ourTexture", 0);
 
-    rm.getShader("uiShader")->use();
-    rm.getShader("uiShader")->setInt("ourTexture", 0);
+    // ourShader.use();
+    // glUniform4f(
+    //     glGetUniformLocation(ourShader.id, "lightColor"), 1.f,
+    //     1.f, 1.f, 1.f);
+
+    ResourceManager::getShader("ourShader").use();
+    glUniform4f(glGetUniformLocation(ResourceManager::getShader("ourShader").id, "lightColor"), 1.f, 1.f, 1.f, 1.f);
 
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -255,9 +276,10 @@ int main(int argc, char **argv) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture.getId());
+        glBindTexture(GL_TEXTURE_2D, ResourceManager::getTexture("texture").getId());
 
-        rm.getShader("ourshader")->use();
+        // rm.getShader("ourshader")->use();
+        ResourceManager::getShader("ourShader").use();
 
         glm::mat4 model = glm::mat4(1.f);
 
@@ -271,21 +293,31 @@ int main(int argc, char **argv) {
             glm::radians(camera.fov),
             (float)window.width / (float)window.height, 0.1f, 100.f);
 
+        // glUniformMatrix4fv(
+        //     glGetUniformLocation(rm.getShader("ourshader")->id, "model"), 1,
+        //     GL_FALSE, glm::value_ptr(model));
+        // glUniformMatrix4fv(
+        //     glGetUniformLocation(rm.getShader("ourshader")->id, "view"), 1,
+        //     GL_FALSE, glm::value_ptr(view));
+        // glUniformMatrix4fv(
+        //     glGetUniformLocation(rm.getShader("ourshader")->id, "projection"),
+        // 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(
-            glGetUniformLocation(rm.getShader("ourshader")->id, "model"), 1,
+            glGetUniformLocation(ResourceManager::getShader("ourShader").id, "model"), 1,
             GL_FALSE, glm::value_ptr(model));
         glUniformMatrix4fv(
-            glGetUniformLocation(rm.getShader("ourshader")->id, "view"), 1,
+            glGetUniformLocation(ResourceManager::getShader("ourShader").id, "view"), 1,
             GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(
-            glGetUniformLocation(rm.getShader("ourshader")->id, "projection"),
+            glGetUniformLocation(ResourceManager::getShader("ourShader").id, "projection"),
             1, GL_FALSE, glm::value_ptr(projection));
 
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6 * 6);
 
         // glDisable(GL_DEPTH_TEST);
-        rm.getShader("uiShader")->use();
+        // rm.getShader("uiShader")->use();
+        ResourceManager::getShader("uiShader").use();
 
         // glm::mat4 proj = glm::ortho(0.0f, (float)window.width,
         //                             (float)window.height, 0.0f,
@@ -296,7 +328,7 @@ int main(int argc, char **argv) {
         // 1,
         //                   GL_FALSE, glm::value_ptr(proj));
 
-        glBindTexture(GL_TEXTURE_2D, uiTexture.getId());
+        glBindTexture(GL_TEXTURE_2D, ResourceManager::getTexture("uiTexture").getId());
 
         glBindVertexArray(UI_VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
