@@ -2,6 +2,7 @@
 #include "glm/ext/vector_float3.hpp"
 #include "glm/trigonometric.hpp"
 
+#include "wengine/model.hpp"
 #include "wengine/resourceManager.hpp"
 #include "wengine/shader.hpp"
 
@@ -93,43 +94,42 @@ void scrollCallback(GLFWwindow *window, double dx, double dy) {
 
 int main(int argc, char **argv) {
 
-    float vertices[] = {
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        -0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-        -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
-        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f};
+    float vertices[] = {-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+                        0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
+                        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+                        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+                        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
+                        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+                        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+                        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+                        0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
+                        0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
+                        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
+                        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+                        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+                        -0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+                        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+                        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+                        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+                        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+                        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+                        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+                        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+                        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+                        0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+                        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+                        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+                        0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
+                        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+                        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+                        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+                        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+                        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
+                        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+                        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+                        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+                        -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
+                        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f};
     unsigned int indices[] = {
         // note that we start from 0!
         0, 1, 3, // first triangle
@@ -220,7 +220,8 @@ int main(int argc, char **argv) {
     //     1.f, 1.f, 1.f);
 
     ResourceManager::getShader("ourShader").use();
-    glUniform4f(glGetUniformLocation(ResourceManager::getShader("ourShader").id, "lightColor"), 1.f, 1.f, 1.f, 1.f);
+    ResourceManager::getShader("ourShader").setVec4f("lightColor", {1.f, 1.f, 1.f, 1.f});
+    // glUniform4f(glGetUniformLocation(ResourceManager::getShader("ourShader").id, "lightColor"), 1.f, 1.f, 1.f, 1.f);
 
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -285,15 +286,18 @@ int main(int argc, char **argv) {
         // glUniformMatrix4fv(
         //     glGetUniformLocation(rm.getShader("ourshader")->id, "projection"),
         // 1, GL_FALSE, glm::value_ptr(projection));
-        glUniformMatrix4fv(
-            glGetUniformLocation(ResourceManager::getShader("ourShader").id, "model"), 1,
-            GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(
-            glGetUniformLocation(ResourceManager::getShader("ourShader").id, "view"), 1,
-            GL_FALSE, glm::value_ptr(view));
-        glUniformMatrix4fv(
-            glGetUniformLocation(ResourceManager::getShader("ourShader").id, "projection"),
-            1, GL_FALSE, glm::value_ptr(projection));
+        // glUniformMatrix4fv(
+        //     glGetUniformLocation(ResourceManager::getShader("ourShader").id, "model"), 1,
+        //     GL_FALSE, glm::value_ptr(model));
+        // glUniformMatrix4fv(
+        //     glGetUniformLocation(ResourceManager::getShader("ourShader").id, "view"), 1,
+        //     GL_FALSE, glm::value_ptr(view));
+        // glUniformMatrix4fv(
+        //     glGetUniformLocation(ResourceManager::getShader("ourShader").id, "projection"),
+        //     1, GL_FALSE, glm::value_ptr(projection));
+        ResourceManager::getShader("ourShader").setMat4("model", model);
+        ResourceManager::getShader("ourShader").setMat4("view", view);
+        ResourceManager::getShader("ourShader").setMat4("projection", projection);
 
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6 * 6);
@@ -314,6 +318,7 @@ int main(int argc, char **argv) {
         glBindTexture(GL_TEXTURE_2D, ResourceManager::getTexture("uiTexture").id);
 
         glBindVertexArray(UI_VAO);
+
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
         gui.render(&window, &camera);
