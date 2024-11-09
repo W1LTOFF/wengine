@@ -18,6 +18,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <system_error>
 
 // #define STB_IMAGE_IMPLEMENTATION
 // #include "stb_image.h"
@@ -39,6 +40,11 @@ float lastFrame = 0.0f;
 float xFromVertexToPixel(float x) { return (x + 1) * (SCREEN_WIDTH / 2.f); }
 float yFromVertexToPixel(float y) { return (-y + 1) * (SCREEN_HEIGHT / 2.f); }
 void processInput(GLFWwindow *window) {
+    // if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+    //     ResourceManager::loadShader("ourShader", "shader/vertex.shader", "shader/fragment.shader");
+    //     ResourceManager::getShader("ourShader").use();
+    // }
+
     if (glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS) {
         // glfwSetCursorPos(window, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -94,42 +100,84 @@ void scrollCallback(GLFWwindow *window, double dx, double dy) {
 
 int main(int argc, char **argv) {
 
-    float vertices[] = {-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-                        0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
-                        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-                        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-                        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-                        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-                        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-                        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-                        0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-                        0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
-                        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
-                        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-                        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-                        -0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-                        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-                        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-                        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-                        -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-                        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-                        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-                        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-                        0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-                        0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-                        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-                        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-                        0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
-                        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-                        0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
-                        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
-                        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
-                        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
-                        0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
-                        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-                        0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
-                        -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
-                        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f};
+    // float vertices[] = {-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+    //                     0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
+    //                     0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+    //                     0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+    //                     -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
+    //                     -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
+    //                     -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+    //                     0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+    //                     0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
+    //                     0.5f, 0.5f, 0.5f, 1.0f, 1.0f,
+    //                     -0.5f, 0.5f, 0.5f, 0.0f, 1.0f,
+    //                     -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+    //                     -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+    //                     -0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+    //                     -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+    //                     -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+    //                     -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+    //                     -0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+    //                     0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+    //                     0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+    //                     0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+    //                     0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+    //                     0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+    //                     0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+    //                     -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+    //                     0.5f, -0.5f, -0.5f, 1.0f, 1.0f,
+    //                     0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+    //                     0.5f, -0.5f, 0.5f, 1.0f, 0.0f,
+    //                     -0.5f, -0.5f, 0.5f, 0.0f, 0.0f,
+    //                     -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,
+    //                     -0.5f, 0.5f, -0.5f, 0.0f, 1.0f,
+    //                     0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
+    //                     0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+    //                     0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
+    //                     -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
+    //                     -0.5f, 0.5f, -0.5f, 0.0f, 1.0f};
+    float vertices[] = {
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+
+        -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+
+        -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+        0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+        0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+        -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+        0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+        -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f};
     unsigned int indices[] = {
         // note that we start from 0!
         0, 1, 3, // first triangle
@@ -148,10 +196,9 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    // Shader ourShader("shader/vertex.shader", "shader/fragment.shader");
-    // Shader uiShader("shader/uiVertex.shader", "shader/uiFragment.shader");
     ResourceManager::loadShader("ourShader", "shader/vertex.shader", "shader/fragment.shader");
     ResourceManager::loadShader("uiShader", "shader/uiVertex.shader", "shader/uiFragment.shader");
+    ResourceManager::loadShader("lightShader", "shader/vertex.shader", "shader/lightShaderFrag.shader");
 
     float ui[] = {-0.7f, -0.8f, 0.f, 0.f, 1.f, 0.7f, -1.f, 0.f, 1.f, 0.f,
                   -0.7f, -1.f, 0.f, 0.f, 0.f, -0.7f, -0.8f, 0.f, 0.f, 1.f,
@@ -184,44 +231,25 @@ int main(int argc, char **argv) {
     // glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
     //              GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
-                          (void *)0);
+    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+    //                       (void *)0);
+    // glEnableVertexAttribArray(0);
+    // glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+    //                       (void *)(3 * sizeof(float)));
+    // glEnableVertexAttribArray(1);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
-                          (void *)(3 * sizeof(float)));
+    glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * sizeof(float), (void *)3);
     glEnableVertexAttribArray(1);
 
-    // wilt::Texture texture("./res/texture/notexture.png");
-    // wilt::Texture uiTexture("./res/texture/texture.png");
+    glm::vec3 lightPos = {5.f, 5.f, -5.f};
+
     ResourceManager::loadTexture("texture", "./res/texture/notexture.png", true);
     ResourceManager::loadTexture("uiTexture", "./res/texture/texture.png", true);
-
-    // ourShader.use();
-    // ourShader.setInt("ourTexture", 0);
-    // glUniform4f(glGetUniformLocation(ourShader.id,
-    // "lightColor"), 1.f, 1.f, 1.f,
-    //             1.f);
-    //
-    // uiShader.use();
-    // uiShader.setInt("ourTexture", 0);
-
-    // rm.getShader("ourShader")->use();
-    // rm.getShader("ourShader")->setInt("ourTexture", 0);
-    // glUniform4f(
-    //     glGetUniformLocation(rm.getShader("ourShader")->id, "lightColor"), 1.f,
-    //     1.f, 1.f, 1.f);
-    //
-    // rm.getShader("uiShader")->use();
-    // rm.getShader("uiShader")->setInt("ourTexture", 0);
-
-    // ourShader.use();
-    // glUniform4f(
-    //     glGetUniformLocation(ourShader.id, "lightColor"), 1.f,
-    //     1.f, 1.f, 1.f);
-
     ResourceManager::getShader("ourShader").use();
-    ResourceManager::getShader("ourShader").setVec4f("lightColor", {1.f, 1.f, 1.f, 1.f});
-    // glUniform4f(glGetUniformLocation(ResourceManager::getShader("ourShader").id, "lightColor"), 1.f, 1.f, 1.f, 1.f);
+    ResourceManager::getShader("ourShader").setVec3f("lihhtPos", lightPos);
+    ResourceManager::getShader("ourShader").setVec3f("lightColor", {1.f, 1.f, 1.f});
 
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -232,7 +260,7 @@ int main(int argc, char **argv) {
     glfwSetCursorPosCallback(window.getWindow(), mouse_callback);
     glfwSetScrollCallback(window.getWindow(), scrollCallback);
 
-    Gui gui(window.getWindow());
+    // Gui gui(window.getWindow());
 
     // int frames = 0;
     // double lastTime = glfwGetTime();
@@ -250,11 +278,9 @@ int main(int argc, char **argv) {
         // }
         // frames++;
 
-        // glEnable(GL_DEPTH_TEST);
-
+        processInput(window.getWindow());
         window.handleInput();
         window.update();
-        processInput(window.getWindow());
 
         glClearColor(0.f, 0.2f, 0.2f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -262,7 +288,6 @@ int main(int argc, char **argv) {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, ResourceManager::getTexture("texture").id);
 
-        // rm.getShader("ourshader")->use();
         ResourceManager::getShader("ourShader").use();
 
         glm::mat4 model = glm::mat4(1.f);
@@ -277,24 +302,6 @@ int main(int argc, char **argv) {
             glm::radians(camera.fov),
             (float)window.width / (float)window.height, 0.1f, 100.f);
 
-        // glUniformMatrix4fv(
-        //     glGetUniformLocation(rm.getShader("ourshader")->id, "model"), 1,
-        //     GL_FALSE, glm::value_ptr(model));
-        // glUniformMatrix4fv(
-        //     glGetUniformLocation(rm.getShader("ourshader")->id, "view"), 1,
-        //     GL_FALSE, glm::value_ptr(view));
-        // glUniformMatrix4fv(
-        //     glGetUniformLocation(rm.getShader("ourshader")->id, "projection"),
-        // 1, GL_FALSE, glm::value_ptr(projection));
-        // glUniformMatrix4fv(
-        //     glGetUniformLocation(ResourceManager::getShader("ourShader").id, "model"), 1,
-        //     GL_FALSE, glm::value_ptr(model));
-        // glUniformMatrix4fv(
-        //     glGetUniformLocation(ResourceManager::getShader("ourShader").id, "view"), 1,
-        //     GL_FALSE, glm::value_ptr(view));
-        // glUniformMatrix4fv(
-        //     glGetUniformLocation(ResourceManager::getShader("ourShader").id, "projection"),
-        //     1, GL_FALSE, glm::value_ptr(projection));
         ResourceManager::getShader("ourShader").setMat4("model", model);
         ResourceManager::getShader("ourShader").setMat4("view", view);
         ResourceManager::getShader("ourShader").setMat4("projection", projection);
@@ -302,18 +309,13 @@ int main(int argc, char **argv) {
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6 * 6);
 
-        // glDisable(GL_DEPTH_TEST);
-        // rm.getShader("uiShader")->use();
+        ResourceManager::getShader("lightShader").use();
+        ResourceManager::getShader("lightShader").setMat4("view", view);
+        ResourceManager::getShader("lightShader").setMat4("model", glm::translate(model, lightPos));
+        ResourceManager::getShader("lightShader").setMat4("projection", projection);
+        glDrawArrays(GL_TRIANGLES, 0, 6 * 6);
+
         ResourceManager::getShader("uiShader").use();
-
-        // glm::mat4 proj = glm::ortho(0.0f, (float)window.width,
-        //                             (float)window.height, 0.0f,
-        // -1.0f, 1.0f);
-
-        // glUniformMatrix4fv(glGetUniformLocation(uiShader.id,
-        // "projection"),
-        // 1,
-        //                   GL_FALSE, glm::value_ptr(proj));
 
         glBindTexture(GL_TEXTURE_2D, ResourceManager::getTexture("uiTexture").id);
 
@@ -321,12 +323,11 @@ int main(int argc, char **argv) {
 
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
-        gui.render(&window, &camera);
+        // gui.render(&window, &camera);
 
         window.swapBuffers();
 
         glfwPollEvents();
-        // std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
