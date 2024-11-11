@@ -1,3 +1,0 @@
--Iinclude
--Iinclude/imgui
---std=c++23
