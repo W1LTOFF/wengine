@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 // #include "wengine/model.hpp"
+#include "wengine/core/model.hpp"
 #include "wengine/core/resourceManager.hpp"
 #include "wengine/core/shader.hpp"
 
