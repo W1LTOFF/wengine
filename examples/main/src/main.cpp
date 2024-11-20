@@ -201,9 +201,9 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    ResourceManager::loadShader("ourShader", "shader/vertex.shader", "shader/fragment.shader");
-    ResourceManager::loadShader("uiShader", "shader/uiVertex.shader", "shader/uiFragment.shader");
-    ResourceManager::loadShader("lightShader", "shader/vertex.shader", "shader/lightShaderFrag.shader");
+    ResourceManager::loadShader("ourShader", "shader/vertex.vert", "shader/fragment.frag");
+    ResourceManager::loadShader("uiShader", "shader/uiVertex.vert", "shader/uiFragment.frag");
+    ResourceManager::loadShader("lightShader", "shader/vertex.vert", "shader/lightShaderFrag.frag");
 
     float ui[] = {-0.7f, -0.8f, 0.f, 0.f, 1.f, 0.7f, -1.f, 0.f, 1.f, 0.f,
                   -0.7f, -1.f, 0.f, 0.f, 0.f, -0.7f, -0.8f, 0.f, 0.f, 1.f,
